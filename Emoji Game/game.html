@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e0c3fc;
+            background: linear-gradient(180deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+
+        .emoji-game {
+            text-align: center;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .emoji {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 50px;
+            font-size: 4rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .emoji:hover {
+            transform: scale(1.1);
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color:white;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .popup-message {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .play-again button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
+        .popup-image {
+            width: 80%;
+            height: 80%;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="emoji-game">
+        <div class="scoreboard">
+            <span>Score: <span id="score">0</span></span>
+            <span>Top Score: <span id="top-score">0</span></span>
+        </div>
+        <div class="emoji-grid" id="emoji-grid">
+            <div class="emoji" id="emoji1" onclick="emojiClicked('emoji1')">😎</div>
+            <div class="emoji" id="emoji2" onclick="emojiClicked('emoji2')">🤧</div>
+            <div class="emoji" id="emoji3" onclick="emojiClicked('emoji3')">🤐</div>
+            <div class="emoji" id="emoji4" onclick="emojiClicked('emoji4')">😱</div>
+            <div class="emoji" id="emoji5" onclick="emojiClicked('emoji5')">🤠</div>
+            <div class="emoji" id="emoji6" onclick="emojiClicked('emoji6')">😘</div>
+            <div class="emoji" id="emoji7" onclick="emojiClicked('emoji7')">😇</div>
+            <div class="emoji" id="emoji8" onclick="emojiClicked('emoji8')">🙂</div>
+            <div class="emoji" id="emoji9" onclick="emojiClicked('emoji9')">🤨</div>
+            <div class="emoji" id="emoji10" onclick="emojiClicked('emoji10')">😉</div>
+            <div class="emoji" id="emoji11" onclick="emojiClicked('emoji11')">🤑</div>
+            <div class="emoji" id="emoji12" onclick="emojiClicked('emoji12')">😡</div>
+        </div>
+        <div class="popup" id="popup">
+            <img src="" alt="Result Image" id="popup-image" class="popup-image">
+            <div class="popup-message" id="popup-message"></div>
+            <div class="play-again">
+                <button onclick="resetGame()">Play Again</button>
+            </div>
+        </div>
+    <script>
+        let score = 0;
+        let topScore = 0;
+        let clickedEmoji1 = false;
+        let clickedEmoji2 = false;
+        let clickedEmoji3 = false;
+        let clickedEmoji4 = false;
+        let clickedEmoji5 = false;
+        let clickedEmoji6 = false;
+        let clickedEmoji7 = false;
+        let clickedEmoji8 = false;
+        let clickedEmoji9 = false;
+        let clickedEmoji10 = false;
+        let clickedEmoji11 = false;
+        let clickedEmoji12 = false;
+
+        function updateScoreboard() {
+            document.getElementById('score').innerText = score;
+            document.getElementById('top-score').innerText = topScore;
+        }
+
+        function displayPopup(message, imageUrl) {
+            const popupElement = document.getElementById('popup');
+            const popupMessageElement = document.getElementById('popup-message');
+            const popupImageElement = document.getElementById('popup-image');
+            popupMessageElement.innerText = message;
+            popupImageElement.src = imageUrl;
+            popupElement.style.display = 'block';
+        }
+
+        function hidePopup() {
+            const popupElement = document.getElementById('popup');
+            popupElement.style.display = 'none';
+        }
+
+        function resetGame() {
+            score = 0;
+            clickedEmoji1 = false;
+            clickedEmoji2 = false;
+            clickedEmoji3 = false;
+            clickedEmoji4 = false;
+            clickedEmoji5 = false;
+            clickedEmoji6 = false;
+            clickedEmoji7 = false;
+            clickedEmoji8 = false;
+            clickedEmoji9 = false;
+            clickedEmoji10 = false;
+            clickedEmoji11 = false;
+            clickedEmoji12 = false;
+            updateScoreboard();
+            hidePopup();
+            document.body.style.background = 'linear-gradient(180deg, #e0c3fc 0%, #8ec5fc 100%)';
+        }
+
+        function endGame(message, imageUrl) {
+            displayPopup(message, imageUrl);
+            topScore = score > topScore ? score : topScore;
+        }
+
+        function win() {
+            endGame(`You Win! Best Score: ${score}/12`, 'win.png');
+            document.body.style.background = 'linear-gradient(180deg, #b1f8b1 0%, #1fd871 100%)';
+        }
+
+        function lose() {
+            endGame(`You Lose! Current Score: ${score}/12`, 'lose.jfif');
+            document.body.style.background = 'linear-gradient(180deg, #f8b1b1 0%, #d87171 100%)';
+        }
+
+        function shuffleEmojis() {
+            const emojiGrid = document.getElementById('emoji-grid');
+            const emojis = Array.from(emojiGrid.children);
+            for (let i = emojis.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                emojiGrid.appendChild(emojis[j]);
+            }
+        }
+
+        function emojiClicked(emojiId) {
+            switch (emojiId) {
+                case 'emoji1':
+                    if (clickedEmoji1) {
+                        lose();
+                    } else {
+                        clickedEmoji1 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji2':
+                    if (clickedEmoji2) {
+                        lose();
+                    } else {
+                        clickedEmoji2 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji3':
+                    if (clickedEmoji3) {
+                        lose();
+                    } else {
+                        clickedEmoji3 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji4':
+                    if (clickedEmoji4) {
+                        lose();
+                    } else {
+                        clickedEmoji4 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji5':
+                    if (clickedEmoji5) {
+                        lose();
+                    } else {
+                        clickedEmoji5 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji6':
+                    if (clickedEmoji6) {
+                        lose();
+                    } else {
+                        clickedEmoji6 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji7':
+                    if (clickedEmoji7) {
+                        lose();
+                    } else {
+                        clickedEmoji7 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji8':
+                    if (clickedEmoji8) {
+                        lose();
+                    } else {
+                        clickedEmoji8 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji9':
+                    if (clickedEmoji9) {
+                        lose();
+                    } else {
+                        clickedEmoji9 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji10':
+                    if (clickedEmoji10) {
+                        lose();
+                    } else {
+                        clickedEmoji10 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji11':
+                    if (clickedEmoji11) {
+                        lose();
+                    } else {
+                        clickedEmoji11 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                case 'emoji12':
+                    if (clickedEmoji12) {
+                        lose();
+                    } else {
+                        clickedEmoji12 = true;
+                        score++;
+                        if (score === 12) {
+                            win();
+                        } else {
+                            updateScoreboard();
+                            shuffleEmojis();
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

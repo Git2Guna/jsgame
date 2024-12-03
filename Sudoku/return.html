@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin-left: 450px;
+            margin-top: 110px;
+        }
+
+        td {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .msg {
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .m {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #888;
+            color: green;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 10px;
+            display: none;
+            width: 300px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .hi {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: red;
+            padding: 5px 8px 5px 8px;
+            border-radius: 30px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        h1 {
+            text-align: center;
+        }
+        body{
+            background-image: url('0.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+        
+            
+        }
+    </style>
+</head>
+
+<body>
+    <div id="msg" class="m">
+        <div class="hi">
+            <span class="close">&times;</span>
+            <h2 id="xwin"></h2>
+        </div>
+    </div>
+    <table id="sudoku">
+        <tr>
+            <td><input type="text" value="2" disabled id="cell00" maxlength="1"></td>
+            <td><input type="text" id="cell01" maxlength="1" onchange="set(this)"></td>
+            <td><input type="text" id="cell02" maxlength="1" onchange="set(this)"></td>
+            <td><input type="text" value="1" disabled id="cell03" maxlength="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" id="cell10" maxlength="1" onchange="set(this)"></td>
+            <td><input type="text" id="cell11" value="1" disabled maxlength="1"></td>
+            <td><input type="text" id="cell12" maxlength="1" onchange="set(this)"></td>
+            <td><input type="text" id="cell13" maxlength="1" onchange="set(this)"></td>
+        </tr>
+
+        <tr>
+            <td><input type="text" id="cell20" maxlength="1" onchange="set(this)"></td>
+            <td><input type="text" id="cell21" maxlength="1" onchange="set(this)"></td>
+            <td><input type="text" id="cell22" value="3" disabled maxlength="1"></td>
+            <td><input type="text" id="cell23" maxlength="1" onchange="set(this)"></td>
+        </tr>
+        <tr>
+            <td><input type="text" id="cell30" value="3" disabled maxlength="1"></td>
+            <td><input type="text" id="cell31" maxlength="1" onchange="set(this)"></td>
+            <td><input type="text" id="cell32"  onchange="set(this)"></td>
+            <td><input type="text" id="cell33" maxlength="1" value="4" disabled maxlength="1"></td>
+        </tr>
+    </table>
+    <script>
+        function set(input) {
+            let value = input.value;
+
+            if(value !== "" && (isNaN(value) || value < 1 || value > 4)){
+                var x = document.getElementById("xwin");
+                x.innerText = "please correct input";
+                var z = document.getElementById("msg");
+                z.style.display = "block";
+                var ctn = document.getElementsByClassName("close")[0];
+                ctn.onclick = function () {
+                    z.style.display = "none";
+                }
+                input.value="";
+                return;
+            }
+
+
+            let a = document.getElementById("cell00").value;
+            let b = document.getElementById("cell01").value;
+            let c = document.getElementById("cell02").value;
+            let d = document.getElementById("cell03").value;
+            let e = document.getElementById("cell10").value;
+            let f = document.getElementById("cell11").value;
+            let g = document.getElementById("cell12").value;
+            let h = document.getElementById("cell13").value;
+            let i = document.getElementById("cell20").value;
+            let j = document.getElementById("cell21").value;
+            let k = document.getElementById("cell22").value;
+            let l = document.getElementById("cell23").value;
+            let m = document.getElementById("cell30").value;
+            let n = document.getElementById("cell31").value;
+            let o = document.getElementById("cell32").value;
+            let p = document.getElementById("cell33").value;
+
+
+
+            if ((a === "2" && b === "3" && c === "4" && d === "1") &&
+                (e === "4" && f === "1" && g === "2" && h === "3") &&
+                (i === "1" && j === "4" && k === "3" && l === "2") &&
+                (m === "3" && n === "2" && o === "1" && p === "4")) {
+                var x = document.getElementById("xwin");
+                x.innerText = "Congrats! You Win";
+                var z = document.getElementById("msg");
+                z.style.display = "block";
+                var ctn = document.getElementsByClassName("close")[0];
+                ctn.onclick = function () {
+                    z.style.display = "none";
+                }
+            }
+            else if ((a && b && c && d) &&
+                (e && f && g && h) &&
+                (i && j && k && l) &&
+                (m && n && o && p)) {
+                var x = document.getElementById("xwin");
+                x.innerText = "You lose";
+                var z = document.getElementById("msg");
+                z.style.display = "block";
+                var ctn = document.getElementsByClassName("close")[0];
+                ctn.onclick = function () {
+                    z.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
